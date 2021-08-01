@@ -1,0 +1,13 @@
+---
+- name: Install packages Ansible-playbook
+  hosts: rhel-manager
+  become: true
+  tasks:
+  - name: Installing httpd package
+    yum: 
+     name: httpd
+     state: installed
+  - name: Starting httpd service
+    service:
+     name: httpd
+     state: started

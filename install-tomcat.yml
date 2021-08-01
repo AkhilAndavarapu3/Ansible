@@ -1,0 +1,31 @@
+---
+- name: This playbook is to install tomcat
+  hosts: rhel-manager
+  become: true
+  tasks:
+  - name: Install java
+    yum: 
+     name: java
+     state: installed
+
+  - name: To download the package from web
+    get_url:
+     url: https://mirrors.estointernet.in/apache/tomcat/tomcat-10/v10.0.8/bin/apache-tomcat-10.0.8.tar.gz
+     dest: /opt
+
+  - name: To untar the file
+    unarchive:
+     src: /opt/apache-tomcat-10.0.8.tar.gz
+     dest: /opt
+     remote_src: yes
+
+  - name: Add execution permissions
+    file:
+     path: /opt/apache-tomcat-10.0.8/bin/startup.sh
+     mode: 0777
+
+  - name: Start the tomcat service using shell
+    shell: nohup ./startup.sh
+    args:
+     chdir: /opt/apache-tomcat-10.0.8/bin
+

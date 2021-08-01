@@ -1,0 +1,8 @@
+---
+- name: For all the hosts
+  hosts: all
+  become: true
+  tasks:
+  - name: creating user prod
+    user:
+      name: prod

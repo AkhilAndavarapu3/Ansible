@@ -1,0 +1,32 @@
+--- 
+- name: Playbook is to install HTTPD
+  hosts: all
+  become: true
+  tasks:
+  - name: Install httpd
+    yum:
+     name: httpd
+     state: installed
+  - name: start service
+    service:
+     name: httpd
+     state: started
+
+
+  - name: Copy index.html file
+    copy:
+     src: /opt/ansible/index.html
+     dest: /var/www/html
+     mode: 0666
+
+  - name: For replacing apache port to 8081
+    lineinfile:
+     path: /etc/httpd/conf/httpd.conf
+     regexp: '^Listen '
+     insertafter: '^#Listen '
+     line: 'Listen 8081'
+
+  - name: restart service
+    service:
+     name: httpd
+     state: started
